@@ -28,7 +28,13 @@ export class ProfilesService {
   }
 
   findOne(id: string) {
-    return this.profiles.find((profile) => profile.id === id);
+    const profile = this.profiles.find((profile) => profile.id === id);
+
+    if (!profile) {
+      throw new NotFoundException(`Profile with id ${id} not found`);
+    }
+
+    return profile;
   }
 
   create(createProfileDto: CreateProfileDto) {
@@ -45,7 +51,7 @@ export class ProfilesService {
     const profile = this.profiles.find((profile) => profile.id === id);
 
     if (!profile) {
-      throw new NotFoundException('Profile not found');
+      throw new NotFoundException(`Profile with id ${id} not found`);
     }
 
     const updatedProfile = { ...profile, ...updateProfileDto };
@@ -57,7 +63,7 @@ export class ProfilesService {
     const profile = this.profiles.find((profile) => profile.id === id);
 
     if (!profile) {
-      throw new NotFoundException('Profile not found');
+      throw new NotFoundException(`Profile with id ${id} not found`);
     }
 
     this.profiles.splice(this.profiles.indexOf(profile), 1);
